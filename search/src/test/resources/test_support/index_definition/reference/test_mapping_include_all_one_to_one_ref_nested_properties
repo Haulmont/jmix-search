@@ -1,0 +1,30 @@
+{
+	"properties": {
+		"oneToOneAssociation": {
+			"properties": {
+				"name": {
+					"type": "text"
+				},
+				"enumValue": {
+					"type": "text"
+				},
+				"textValue": {
+					"type": "text"
+				},
+				"oneToOneAssociation": {
+                	"properties": {
+                		"_instance_name": {
+                        	"type": "text"
+                        }
+                	}
+                }
+			}
+		},
+		"name": {
+			"type": "text"
+		},
+		"_instance_name": {
+			"type": "text"
+		}
+	}
+}
