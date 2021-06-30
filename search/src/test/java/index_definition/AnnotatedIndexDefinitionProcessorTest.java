@@ -18,6 +18,7 @@ package index_definition;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jmix.core.Resources;
 import io.jmix.search.index.IndexConfiguration;
 import io.jmix.search.index.mapping.processor.AnnotatedIndexDefinitionProcessor;
 import org.hamcrest.Matcher;
@@ -53,6 +54,9 @@ public class AnnotatedIndexDefinitionProcessorTest {
     @Autowired
     AnnotatedIndexDefinitionProcessor indexDefinitionProcessor;
 
+    @Autowired
+    Resources resources;
+
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideTestCases")
     public void indexDefinitionProcessing(AnnotatedIndexDefinitionProcessorTestCase testCase) {
@@ -82,9 +86,8 @@ public class AnnotatedIndexDefinitionProcessorTest {
     }
 
     protected JsonNode readJsonFromFile(String path) {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(path);
         try {
+            URL resource = resources.getResource(path).getURL();
             return objectMapper.readTree(resource);
         } catch (IOException e) {
             throw new RuntimeException(String.format("Unable to read json from file '%s'", path), e);

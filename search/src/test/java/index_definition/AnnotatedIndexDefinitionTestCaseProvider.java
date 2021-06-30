@@ -74,6 +74,22 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityClass(TestSimpleRootEntity.class)
                         .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_multi_inclusion")
                         .build()
+                ),
+                Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Programmatic mapping is correct")
+                        .indexDefinitionClass(TestProgrammaticMappingIndexDefinition.class)
+                        .expectedEntityName("test_SimpleRootEntity")
+                        .expectedIndexName("search_index_test_simplerootentity")
+                        .expectedEntityClass(TestSimpleRootEntity.class)
+                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_programmatic")
+                        .build()
+                ),
+                Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Programmatic mapping ignores annotations")
+                        .indexDefinitionClass(TestProgrammaticMappingWithAnnotationsIndexDefinition.class)
+                        .expectedEntityName("test_SimpleRootEntity")
+                        .expectedIndexName("search_index_test_simplerootentity")
+                        .expectedEntityClass(TestSimpleRootEntity.class)
+                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_programmatic_with_annotations")
+                        .build()
                 )
         );
     }
