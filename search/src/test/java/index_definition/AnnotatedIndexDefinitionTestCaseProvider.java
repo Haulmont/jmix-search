@@ -40,7 +40,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_include_all_local_properties")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_include_all_local_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Specified properties are included to mapping if supported")
@@ -48,7 +48,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_include_specific_local_properties")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_include_specific_local_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("It's possible to exclude some properties from wildcard coverage")
@@ -56,7 +56,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_include_all_local_properties_with_exclusion")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_include_all_local_properties_with_exclusion")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Multiple annotation on a single method are supported")
@@ -64,7 +64,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_multi_inclusion")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_multi_inclusion")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Multiple annotated methods are supported")
@@ -72,7 +72,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_multi_inclusion")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_multi_inclusion")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Programmatic mapping is correct")
@@ -80,7 +80,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_programmatic")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_programmatic")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Programmatic mapping ignores annotations")
@@ -88,7 +88,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_SimpleRootEntity")
                         .expectedIndexName("search_index_test_simplerootentity")
                         .expectedEntityClass(TestSimpleRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/common/test_mapping_programmatic_with_annotations")
+                        .pathToFileWithExpectedMapping("index_definition/common/test_mapping_programmatic_with_annotations")
                         .build()
                 )
         );
@@ -101,7 +101,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntity")
                         .expectedIndexName("search_index_test_rootentity")
                         .expectedEntityClass(TestRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/reference/test_mapping_include_one_to_one_reference_property")
+                        .pathToFileWithExpectedMapping("index_definition/reference/test_mapping_include_one_to_one_reference_property")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Nested wildcard includes all supported nested properties")
@@ -109,7 +109,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntity")
                         .expectedIndexName("search_index_test_rootentity")
                         .expectedEntityClass(TestRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/reference/test_mapping_include_all_one_to_one_ref_nested_properties")
+                        .pathToFileWithExpectedMapping("index_definition/reference/test_mapping_include_all_one_to_one_ref_nested_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Specified nested properties are included to mapping if supported")
@@ -117,7 +117,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntity")
                         .expectedIndexName("search_index_test_rootentity")
                         .expectedEntityClass(TestRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/reference/test_mapping_include_specific_one_to_one_ref_nested_properties")
+                        .pathToFileWithExpectedMapping("index_definition/reference/test_mapping_include_specific_one_to_one_ref_nested_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Sub-nested wildcard includes all supported sub-nested properties")
@@ -125,7 +125,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntity")
                         .expectedIndexName("search_index_test_rootentity")
                         .expectedEntityClass(TestRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/reference/test_mapping_include_all_one_to_one_sub_ref_nested_properties")
+                        .pathToFileWithExpectedMapping("index_definition/reference/test_mapping_include_all_one_to_one_sub_ref_nested_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Specified sub-nested properties are included to mapping if supported")
@@ -133,7 +133,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntity")
                         .expectedIndexName("search_index_test_rootentity")
                         .expectedEntityClass(TestRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/reference/test_mapping_include_specific_one_to_one_sub_ref_nested_properties")
+                        .pathToFileWithExpectedMapping("index_definition/reference/test_mapping_include_specific_one_to_one_sub_ref_nested_properties")
                         .build()
                 )
         );
@@ -146,7 +146,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_FileRootEntity")
                         .expectedIndexName("search_index_test_filerootentity")
                         .expectedEntityClass(TestFileRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/file/test_mapping_include_local_file_property")
+                        .pathToFileWithExpectedMapping("index_definition/file/test_mapping_include_local_file_property")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("File content field is still present in mapping with disabled content indexing")
@@ -154,7 +154,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_FileRootEntity")
                         .expectedIndexName("search_index_test_filerootentity")
                         .expectedEntityClass(TestFileRootEntity.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/file/test_mapping_include_local_file_property")
+                        .pathToFileWithExpectedMapping("index_definition/file/test_mapping_include_local_file_property")
                         .build()
                 )
         );
@@ -167,7 +167,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntityWithEmbedded")
                         .expectedIndexName("search_index_test_rootentitywithembedded")
                         .expectedEntityClass(TestRootEntityWithEmbedded.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/embedded/test_mapping_include_all_embeddable_properties")
+                        .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_all_embeddable_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Embedded-level wildcard includes all supported embeddable properties")
@@ -175,7 +175,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntityWithEmbedded")
                         .expectedIndexName("search_index_test_rootentitywithembedded")
                         .expectedEntityClass(TestRootEntityWithEmbedded.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/embedded/test_mapping_include_all_embeddable_properties")
+                        .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_all_embeddable_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Specified embeddable properties are included to mapping if supported")
@@ -183,7 +183,7 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
                         .expectedEntityName("test_RootEntityWithEmbedded")
                         .expectedIndexName("search_index_test_rootentitywithembedded")
                         .expectedEntityClass(TestRootEntityWithEmbedded.class)
-                        .pathToFileWithExpectedMapping("test_support/index_definition/embedded/test_mapping_include_specific_embeddable_property")
+                        .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_specific_embeddable_property")
                         .build()
                 )
         );
