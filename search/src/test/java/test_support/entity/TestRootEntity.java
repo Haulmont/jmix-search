@@ -24,6 +24,7 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @JmixEntity
 @Entity(name = "test_RootEntity")
@@ -53,6 +54,19 @@ public class TestRootEntity extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private TestReferenceEntity oneToOneAssociation;
 
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @OneToMany(mappedBy = "testRootEntityManyToOne")
+    private List<TestReferenceEntity> oneToManyAssociation;
+
+    public List<TestReferenceEntity> getOneToManyAssociation() {
+        return oneToManyAssociation;
+    }
+
+    public void setOneToManyAssociation(List<TestReferenceEntity> oneToManyAssociation) {
+        this.oneToManyAssociation = oneToManyAssociation;
+    }
+
     public TestReferenceEntity getOneToOneAssociation() {
         return oneToOneAssociation;
     }
@@ -71,6 +85,10 @@ public class TestRootEntity extends BaseEntity {
 
     public Date getDateValue() {
         return dateValue;
+    }
+
+    public void setDateValue(Date dateValue) {
+        this.dateValue = dateValue;
     }
 
     public Integer getIntValue() {

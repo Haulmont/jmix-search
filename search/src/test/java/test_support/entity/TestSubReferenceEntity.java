@@ -46,6 +46,17 @@ public class TestSubReferenceEntity extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "oneToOneAssociation")
     private TestReferenceEntity testReferenceEntity;
+    @JoinColumn(name = "TEST_REF_ENTITY_M_TO_O_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TestReferenceEntity testReferenceEntityManyToOne;
+
+    public TestReferenceEntity getTestReferenceEntityManyToOne() {
+        return testReferenceEntityManyToOne;
+    }
+
+    public void setTestReferenceEntityManyToOne(TestReferenceEntity testReferenceEntityManyToOne) {
+        this.testReferenceEntityManyToOne = testReferenceEntityManyToOne;
+    }
 
     public TestReferenceEntity getTestReferenceEntity() {
         return testReferenceEntity;

@@ -24,6 +24,7 @@ import io.jmix.core.metamodel.annotation.JmixEntity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @JmixEntity
 @Entity(name = "test_ReferenceEntity")
@@ -54,7 +55,32 @@ public class TestReferenceEntity extends BaseEntity {
     private Integer enumValue;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "oneToOneAssociation")
-    private TestRootEntity testRootEntity;
+    private TestRootEntity testRootEntityOneToOne;
+
+    @JoinColumn(name = "TEST_ROOT_ENTITY_M_TO_O_ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TestRootEntity testRootEntityManyToOne;
+
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @OnDelete(DeletePolicy.UNLINK)
+    @OneToMany(mappedBy = "testReferenceEntityManyToOne")
+    private List<TestSubReferenceEntity> oneToManyAssociation;
+
+    public List<TestSubReferenceEntity> getOneToManyAssociation() {
+        return oneToManyAssociation;
+    }
+
+    public void setOneToManyAssociation(List<TestSubReferenceEntity> oneToManyAssociation) {
+        this.oneToManyAssociation = oneToManyAssociation;
+    }
+
+    public TestRootEntity getTestRootEntityManyToOne() {
+        return testRootEntityManyToOne;
+    }
+
+    public void setTestRootEntityManyToOne(TestRootEntity testRootEntityManyToOne) {
+        this.testRootEntityManyToOne = testRootEntityManyToOne;
+    }
 
     public TestSubReferenceEntity getOneToOneAssociation() {
         return oneToOneAssociation;
@@ -64,12 +90,12 @@ public class TestReferenceEntity extends BaseEntity {
         this.oneToOneAssociation = oneToOneAssociation;
     }
 
-    public TestRootEntity getTestRootEntity() {
-        return testRootEntity;
+    public TestRootEntity getTestRootEntityOneToOne() {
+        return testRootEntityOneToOne;
     }
 
-    public void setTestRootEntity(TestRootEntity testRootEntity) {
-        this.testRootEntity = testRootEntity;
+    public void setTestRootEntityOneToOne(TestRootEntity testRootEntityOneToOne) {
+        this.testRootEntityOneToOne = testRootEntityOneToOne;
     }
 
     public TestEnum getEnumValue() {
@@ -82,6 +108,10 @@ public class TestReferenceEntity extends BaseEntity {
 
     public Date getDateValue() {
         return dateValue;
+    }
+
+    public void setDateValue(Date dateValue) {
+        this.dateValue = dateValue;
     }
 
     public Integer getIntValue() {
