@@ -56,8 +56,12 @@ public class TestIndexingQueueItemsTracker implements Consumer<Collection<Indexi
         return !getItemsForEntityAndOperation(entity, operation).isEmpty();
     }
 
-    public boolean containsQueueItemsForEntityAndOperation(Object entity, IndexingOperation operation, int amount) {
-        return getItemsForEntityAndOperation(entity, operation).size() == amount;
+    public boolean containsQueueItemsForEntityAndOperation(Object entity, IndexingOperation operation, int strictAmount) {
+        return getItemsForEntityAndOperation(entity, operation).size() == strictAmount;
+    }
+
+    public int getAmountOfItems(Object entity, IndexingOperation operation) {
+        return getItemsForEntityAndOperation(entity, operation).size();
     }
 
     public void clear() {
@@ -68,7 +72,7 @@ public class TestIndexingQueueItemsTracker implements Consumer<Collection<Indexi
         String entityId = idSerialization.idToString(Id.of(entity));
         Multimap<String, IndexingQueueItem> itemsForOperation = registry.get(operation);
         Collection<IndexingQueueItem> result;
-        if(itemsForOperation == null) {
+        if (itemsForOperation == null) {
             result = Collections.emptyList();
         } else {
             result = itemsForOperation.get(entityId);

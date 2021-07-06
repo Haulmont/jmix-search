@@ -42,10 +42,7 @@ import io.jmix.search.index.queue.IndexingQueueManager;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import test_support.change_tracking.TestRootEntityIndexDefinition;
 
 import javax.sql.DataSource;
@@ -55,6 +52,7 @@ import java.util.List;
 @Configuration
 @JmixModule
 @Import({BaseSearchTestConfiguration.class})
+@PropertySource("classpath:/test_support/test-app.properties")
 public class EntityChangeTrackingTestConfiguration {
 
     @Autowired
@@ -84,7 +82,6 @@ public class EntityChangeTrackingTestConfiguration {
         return new TestIndexingQueueItemsTracker(idSerialization);
     }
 
-
     @Bean("search_JpaIndexingQueueManager")
     @Primary
     public IndexingQueueManager indexingQueueManager() {
@@ -92,7 +89,7 @@ public class EntityChangeTrackingTestConfiguration {
     }
 
     @Bean
-    public TestEntityCreator testEntityCreator(Metadata metadata, DataManager dataManager) {
-        return new TestEntityCreator(metadata, dataManager);
+    public TestEntityWrapperManager testEntityWrapperManager(Metadata metadata, DataManager dataManager) {
+        return new TestEntityWrapperManager(metadata, dataManager);
     }
 }
