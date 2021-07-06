@@ -30,6 +30,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * Keep all Indexing Queue Items enqueued by IndexingQueueManager
+ */
 public class TestIndexingQueueItemsTracker implements Consumer<Collection<IndexingQueueItem>> {
 
     protected Map<IndexingOperation, Multimap<String, IndexingQueueItem>> registry = new ConcurrentHashMap<>();

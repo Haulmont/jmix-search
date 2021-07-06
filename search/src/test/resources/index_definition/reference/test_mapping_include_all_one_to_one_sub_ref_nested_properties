@@ -2,22 +2,29 @@
 	"properties": {
 		"oneToOneAssociation": {
 			"properties": {
+				"oneToOneAssociation": {
+					"properties": {
+						"textValue": {
+							"type": "text"
+						},
+						"name": {
+							"type": "text"
+						},
+						"testReferenceEntityManyToOne": {
+							"properties": {
+								"_instance_name": {
+									"type": "text"
+								}
+							}
+						},
+						"enumValue": {
+							"type": "text"
+						}
+					}
+				},
 				"name": {
 					"type": "text"
-				},
-				"oneToOneAssociation": {
-                	"properties": {
-                		"name": {
-                        	"type": "text"
-                        },
-                        "enumValue": {
-                        	"type": "text"
-                        },
-                        "textValue": {
-                        	"type": "text"
-                        }
-                	}
-                }
+				}
 			}
 		},
 		"name": {

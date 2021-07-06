@@ -23,6 +23,9 @@ import org.springframework.core.type.classreading.MetadataReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Detects only specified Index Definition classes
+ */
 public class TestIndexDefinitionDetector extends IndexDefinitionDetector {
 
     protected final List<String> detectableClassNames;

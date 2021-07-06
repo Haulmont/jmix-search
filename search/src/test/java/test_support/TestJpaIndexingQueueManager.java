@@ -22,6 +22,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
+/**
+ * JpaIndexingQueueManager with additional test tracker of queue items
+ */
 public class TestJpaIndexingQueueManager extends JpaIndexingQueueManager {
 
     protected final TestIndexingQueueItemsTracker indexingQueueItemsTracker;

@@ -24,6 +24,9 @@ import test_support.entity.TestSubReferenceEntity;
 
 import java.util.*;
 
+/**
+ * Allows to create and modify test entities
+ */
 public class TestEntityWrapperManager {
 
     protected final Metadata metadata;

@@ -20,6 +20,9 @@ import io.jmix.search.index.impl.StartupIndexSynchronizer;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Disables synchronization of indexes on application startup
+ */
 public class TestNoopStartupIndexSynchronizer extends StartupIndexSynchronizer {
 
     public TestNoopStartupIndexSynchronizer() {

@@ -68,11 +68,33 @@ public class BaseSearchTestConfiguration {
     @Autowired
     SearchProperties searchProperties;
 
+    // Test Search beans
+
     @Bean("search_IndexDefinitionDetector")
     @Primary
     public IndexDefinitionDetector indexDefinitionDetector(List<Class<?>> testAutoDetectableIndexDefinitionClasses) {
         return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionClasses);
     }
+
+    @Bean("search_RestHighLevelClient")
+    public RestHighLevelClient elasticSearchClient() {
+        String esUrl = searchProperties.getElasticsearchUrl();
+        HttpHost esHttpHost = HttpHost.create(esUrl);
+        RestClientBuilder restClientBuilder = RestClient.builder(esHttpHost);
+
+        if (!Strings.isNullOrEmpty(searchProperties.getElasticsearchLogin())) {
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY,
+                    new UsernamePasswordCredentials(searchProperties.getElasticsearchLogin(), searchProperties.getElasticsearchPassword())
+            );
+            restClientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
+        }
+
+        return new RestHighLevelClient(restClientBuilder);
+    }
+
+
+    // Test Common beans
 
     @Bean
     public UserRepository userRepository() {
@@ -107,22 +129,5 @@ public class BaseSearchTestConfiguration {
     @Primary
     PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JmixTransactionManager(Stores.MAIN, entityManagerFactory);
-    }
-
-    @Bean("search_RestHighLevelClient")
-    public RestHighLevelClient elasticSearchClient() {
-        String esUrl = searchProperties.getElasticsearchUrl();
-        HttpHost esHttpHost = HttpHost.create(esUrl);
-        RestClientBuilder restClientBuilder = RestClient.builder(esHttpHost);
-
-        if (!Strings.isNullOrEmpty(searchProperties.getElasticsearchLogin())) {
-            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(searchProperties.getElasticsearchLogin(), searchProperties.getElasticsearchPassword())
-            );
-            restClientBuilder.setHttpClientConfigCallback(httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
-        }
-
-        return new RestHighLevelClient(restClientBuilder);
     }
 }
