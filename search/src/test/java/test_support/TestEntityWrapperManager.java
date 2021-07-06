@@ -23,6 +23,7 @@ import test_support.entity.TestRootEntity;
 import test_support.entity.TestSubReferenceEntity;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Allows to create and modify test entities
@@ -63,11 +64,15 @@ public class TestEntityWrapperManager {
     }
 
     public void save(Object... instances) {
-        dataManager.save(instances);
+        SaveContext saveContext = new SaveContext();
+        Stream.of(instances).map(this::reload).forEach(saveContext::saving);
+        dataManager.save(saveContext);
     }
 
     public void remove(Object... instances) {
-        dataManager.remove(instances);
+        SaveContext saveContext = new SaveContext();
+        Stream.of(instances).map(this::reload).forEach(saveContext::removing);
+        dataManager.save(saveContext);
     }
 
     protected <T> T reload(T instance) {

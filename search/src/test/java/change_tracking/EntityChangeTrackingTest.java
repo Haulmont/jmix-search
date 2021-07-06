@@ -81,6 +81,15 @@ public class EntityChangeTrackingTest {
     }
 
     @Test
+    @DisplayName("Deletion of not-indexed entity doesn't lead to queue item enqueueing")
+    public void deleteNotIndexedEntity() {
+        TestReferenceEntity entity = ewm.createTestReferenceEntity().save();
+        ewm.remove(entity);
+        boolean enqueuedDelete = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(entity, IndexingOperation.DELETE, 0);
+        Assert.assertTrue(enqueuedDelete);
+    }
+
+    @Test
     @DisplayName("Creation of not-indexed doesn't lead to queue item enqueueing")
     public void createNotIndexedEntity() {
         TestReferenceEntity entity = ewm.createTestReferenceEntity().save();
@@ -131,6 +140,18 @@ public class EntityChangeTrackingTest {
         indexingQueueItemsTracker.clear();
 
         ewm.wrap(rootEntity).setOneToOneAssociation(null).save();
+        boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
+        Assert.assertTrue(enqueued);
+    }
+
+    @Test
+    @DisplayName("Deletion of one-to-one reference leads to queue item enqueueing")
+    public void deleteOneToOneReference() {
+        TestReferenceEntity reference = ewm.createTestReferenceEntity().save();
+        TestRootEntity rootEntity = ewm.createTestRootEntity().setOneToOneAssociation(reference).save();
+        indexingQueueItemsTracker.clear();
+
+        ewm.remove(reference);
         boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
         Assert.assertTrue(enqueued);
     }
@@ -200,6 +221,19 @@ public class EntityChangeTrackingTest {
     }
 
     @Test
+    @DisplayName("Deletion of one-to-one sub-reference leads to queue item enqueueing")
+    public void deleteOneToOneSubReference() {
+        TestSubReferenceEntity subReference = ewm.createTestSubReferenceEntity().save();
+        TestReferenceEntity reference = ewm.createTestReferenceEntity().setOneToOneAssociation(subReference).save();
+        TestRootEntity rootEntity = ewm.createTestRootEntity().setOneToOneAssociation(reference).save();
+        indexingQueueItemsTracker.clear();
+
+        ewm.remove(subReference);
+        boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
+        Assert.assertTrue(enqueued);
+    }
+
+    @Test
     @DisplayName("Update of indexed local property of one-to-one sub-reference leads to queue item enqueueing")
     public void updateIndexedLocalPropertyOfOneToOneSubReference() {
         TestSubReferenceEntity subReference = ewm.createTestSubReferenceEntity().save();
@@ -260,6 +294,19 @@ public class EntityChangeTrackingTest {
         indexingQueueItemsTracker.clear();
 
         ewm.wrap(rootEntity).setOneToManyAssociation().save();
+        boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
+        Assert.assertTrue(enqueued);
+    }
+
+    @Test
+    @DisplayName("Deletion of some one-to-many reference from collection leads to queue item enqueueing")
+    public void deleteOneToManyReference() {
+        TestReferenceEntity firstReference = ewm.createTestReferenceEntity().save();
+        TestReferenceEntity secondReference = ewm.createTestReferenceEntity().save();
+        TestRootEntity rootEntity = ewm.createTestRootEntity().setOneToManyAssociation(firstReference, secondReference).save();
+        indexingQueueItemsTracker.clear();
+
+        ewm.remove(firstReference);
         boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
         Assert.assertTrue(enqueued);
     }
@@ -333,6 +380,20 @@ public class EntityChangeTrackingTest {
     }
 
     @Test
+    @DisplayName("Deletion of some one-to-many sub-reference from collection leads to queue item enqueueing")
+    public void deleteOneToManySubReference() {
+        TestSubReferenceEntity firstSubReference = ewm.createTestSubReferenceEntity().save();
+        TestSubReferenceEntity secondSubReference = ewm.createTestSubReferenceEntity().save();
+        TestReferenceEntity reference = ewm.createTestReferenceEntity().setOneToManyAssociation(firstSubReference, secondSubReference).save();
+        TestRootEntity rootEntity = ewm.createTestRootEntity().setOneToManyAssociation(reference).save();
+        indexingQueueItemsTracker.clear();
+
+        ewm.remove(firstSubReference);
+        boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
+        Assert.assertTrue(enqueued);
+    }
+
+    @Test
     @DisplayName("Update of indexed local property of one-to-many sub-reference leads to queue item enqueueing")
     public void updateIndexedLocalPropertyOfOneToManySubReference() {
         TestSubReferenceEntity firstSubReference = ewm.createTestSubReferenceEntity().save();
@@ -359,23 +420,4 @@ public class EntityChangeTrackingTest {
         boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 0);
         Assert.assertTrue(enqueued);
     }
-
-
-    /*@Test
-    @DisplayName("Deletion of reference leads to queue item enqueueing")
-    public void deleteOneToOneReference() {
-        *//*TestReferenceEntity reference = entityCreator.createTestReferenceEntity().save();
-        TestRootEntity rootEntity = entityCreator.createTestRootEntity().setOneToOneAssociation(reference).save();*//*
-        TestReferenceEntity reference = metadata.create(TestReferenceEntity.class);
-        TestRootEntity rootEntity = metadata.create(TestRootEntity.class);
-        rootEntity.setOneToOneAssociation(reference);
-        SaveContext initContext = new SaveContext().saving(rootEntity, reference).setJoinTransaction(false);
-        dataManager.save(initContext);
-        indexingQueueItemsTracker.clear();
-
-        SaveContext saveContext = new SaveContext().removing(reference).setJoinTransaction(false);
-        dataManager.save(saveContext);
-        boolean enqueued = indexingQueueItemsTracker.containsQueueItemsForEntityAndOperation(rootEntity, IndexingOperation.INDEX, 1);
-        Assert.assertTrue(enqueued);
-    }*/
 }

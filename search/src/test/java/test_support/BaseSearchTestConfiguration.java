@@ -107,6 +107,7 @@ public class BaseSearchTestConfiguration {
         dataSource.setUrl("jdbc:hsqldb:mem:testdb");
         dataSource.setUsername("sa");
         dataSource.setPassword("");
+        dataSource.addConnectionProperty("hsqldb.tx", "mvcc");
         return dataSource;
     }
 
