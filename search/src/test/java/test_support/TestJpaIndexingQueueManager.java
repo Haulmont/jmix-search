@@ -18,8 +18,8 @@ package test_support;
 
 import io.jmix.search.index.queue.entity.IndexingQueueItem;
 import io.jmix.search.index.queue.impl.JpaIndexingQueueManager;
-import org.jetbrains.annotations.NotNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 /**

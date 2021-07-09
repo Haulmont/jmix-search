@@ -17,9 +17,9 @@
 package test_support;
 
 import io.jmix.search.index.mapping.processor.IndexDefinitionDetector;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.core.type.classreading.MetadataReader;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +35,7 @@ public class TestIndexDefinitionDetector extends IndexDefinitionDetector {
     }
 
     @Override
-    public boolean isCandidate(@NotNull MetadataReader metadataReader) {
+    public boolean isCandidate(@Nonnull MetadataReader metadataReader) {
         return super.isCandidate(metadataReader) && isShouldBeDetected(metadataReader);
     }
 
