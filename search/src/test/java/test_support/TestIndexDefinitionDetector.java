@@ -20,18 +20,17 @@ import io.jmix.search.index.mapping.processor.IndexDefinitionDetector;
 import org.springframework.core.type.classreading.MetadataReader;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 /**
- * Detects only specified Index Definition classes
+ * Detects only specified Index Definition classes/packages
  */
 public class TestIndexDefinitionDetector extends IndexDefinitionDetector {
 
-    protected final List<String> detectableClassNames;
+    protected final TestAutoDetectableIndexDefinitionScope scope;
 
-    public TestIndexDefinitionDetector(List<Class<?>> detectableClasses) {
-        this.detectableClassNames = detectableClasses.stream().map(Class::getName).collect(Collectors.toList());
+    public TestIndexDefinitionDetector(@Nullable TestAutoDetectableIndexDefinitionScope scope) {
+        this.scope = scope == null ? TestAutoDetectableIndexDefinitionScope.builder().build() : scope;
     }
 
     @Override
@@ -40,6 +39,12 @@ public class TestIndexDefinitionDetector extends IndexDefinitionDetector {
     }
 
     protected boolean isShouldBeDetected(MetadataReader metadataReader) {
-        return detectableClassNames.contains(metadataReader.getClassMetadata().getClassName());
+        boolean matchClass = scope.getClasses().stream()
+                .map(Class::getName)
+                .anyMatch((c) -> c.equals(metadataReader.getClassMetadata().getClassName()));
+        if (matchClass) {
+            return true;
+        }
+        return scope.getPackages().stream().anyMatch((p) -> metadataReader.getClassMetadata().getClassName().startsWith(p));
     }
 }

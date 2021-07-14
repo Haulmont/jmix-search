@@ -30,6 +30,7 @@ import io.jmix.data.persistence.DbmsSpecifics;
 import io.jmix.eclipselink.EclipselinkConfiguration;
 import io.jmix.search.SearchConfiguration;
 import io.jmix.search.SearchProperties;
+import io.jmix.search.index.impl.StartupIndexSynchronizer;
 import io.jmix.search.index.mapping.processor.IndexDefinitionDetector;
 import io.jmix.security.SecurityConfiguration;
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -52,9 +53,9 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.util.List;
 
 @Configuration
 @Import({
@@ -70,14 +71,26 @@ public class BaseSearchTestConfiguration {
 
     // Test Search beans
 
-    @Bean("search_IndexDefinitionDetector")
+    @Bean("search_StartupIndexSynchronizer")
+    @Primary
+    public StartupIndexSynchronizer startupIndexSynchronizer() {
+        return new TestNoopStartupIndexSynchronizer();
+    }
+
+    /*@Bean
     @Primary
     public IndexDefinitionDetector indexDefinitionDetector(List<Class<?>> testAutoDetectableIndexDefinitionClasses) {
         return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionClasses);
+    }*/
+
+    @Bean
+    @Primary
+    public IndexDefinitionDetector indexDefinitionDetector(@Nullable TestAutoDetectableIndexDefinitionScope testAutoDetectableIndexDefinitionScope) {
+        return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionScope); //TestAutoDetectableIndexDefinitionScope
     }
 
-    @Bean("search_RestHighLevelClient")
-    public RestHighLevelClient elasticSearchClient() {
+    @Bean
+    public RestHighLevelClient baseElasticSearchClient() {
         String esUrl = searchProperties.getElasticsearchUrl();
         HttpHost esHttpHost = HttpHost.create(esUrl);
         RestClientBuilder restClientBuilder = RestClient.builder(esHttpHost);

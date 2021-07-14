@@ -17,8 +17,6 @@
 package index_definition;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jmix.core.Resources;
 import io.jmix.search.index.IndexConfiguration;
 import io.jmix.search.index.mapping.processor.AnnotatedIndexDefinitionProcessor;
 import org.hamcrest.Matcher;
@@ -33,10 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import test_support.IndexDefinitionProcessingTestConfiguration;
+import test_support.TestJsonUtils;
 import test_support.index_definition.IndexConfigurationMatcher;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.stream.Stream;
 
 import static index_definition.AnnotatedIndexDefinitionTestCaseProvider.*;
@@ -49,13 +46,8 @@ public class AnnotatedIndexDefinitionProcessorTest {
 
     private static final Logger log = LoggerFactory.getLogger(AnnotatedIndexDefinitionProcessorTest.class);
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @Autowired
     AnnotatedIndexDefinitionProcessor indexDefinitionProcessor;
-
-    @Autowired
-    Resources resources;
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("provideTestCases")
@@ -76,21 +68,12 @@ public class AnnotatedIndexDefinitionProcessorTest {
     }
 
     protected Matcher<IndexConfiguration> createIndexConfigurationMatcher(AnnotatedIndexDefinitionProcessorTestCase testCase) {
-        JsonNode expectedMapping = readJsonFromFile(testCase.getPathToFileWithExpectedMapping());
+        JsonNode expectedMapping = TestJsonUtils.readJsonFromFile(testCase.getPathToFileWithExpectedMapping());
         return IndexConfigurationMatcher.configureWith(
                 testCase.getExpectedEntityName(),
                 testCase.getExpectedIndexName(),
                 testCase.getExpectedEntityClass(),
                 expectedMapping
         );
-    }
-
-    protected JsonNode readJsonFromFile(String path) {
-        try {
-            URL resource = resources.getResource(path).getURL();
-            return objectMapper.readTree(resource);
-        } catch (IOException e) {
-            throw new RuntimeException(String.format("Unable to read json from file '%s'", path), e);
-        }
     }
 }

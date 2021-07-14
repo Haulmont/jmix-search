@@ -16,12 +16,16 @@
 
 package test_support;
 
-import io.jmix.core.annotation.JmixModule;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.elasticsearch.action.DocWriteRequest;
 
-@Configuration
-@JmixModule
-@Import({BaseSearchTestConfiguration.class})
-public class IndexDefinitionProcessingTestConfiguration {
+public class TestBulkRequestDeleteActionValidationData extends TestAbstractBulkRequestActionValidationData {
+
+    public TestBulkRequestDeleteActionValidationData(String index, String id) {
+        super(index, id);
+    }
+
+    @Override
+    public DocWriteRequest.OpType getOperationType() {
+        return DocWriteRequest.OpType.DELETE;
+    }
 }

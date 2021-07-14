@@ -16,12 +16,17 @@
 
 package test_support;
 
-import io.jmix.core.annotation.JmixModule;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import com.fasterxml.jackson.databind.JsonNode;
+import org.elasticsearch.action.DocWriteRequest;
 
-@Configuration
-@JmixModule
-@Import({BaseSearchTestConfiguration.class})
-public class IndexDefinitionProcessingTestConfiguration {
+public class TestBulkRequestIndexActionValidationData extends TestAbstractBulkRequestActionWithBodyValidationData {
+
+    public TestBulkRequestIndexActionValidationData(String index, String id, JsonNode source) {
+        super(index, id, source);
+    }
+
+    @Override
+    public DocWriteRequest.OpType getOperationType() {
+        return DocWriteRequest.OpType.INDEX;
+    }
 }

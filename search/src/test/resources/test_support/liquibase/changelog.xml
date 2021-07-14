@@ -92,4 +92,135 @@
                                  constraintName="FK_TESTSUBREFE_ON_TESTREFENTI" referencedColumnNames="ID"
                                  referencedTableName="TEST_REFERENCE_ENTITY"/>
     </changeSet>
+
+    <changeSet id="8" author="test">
+        <createTable tableName="TEST_LONG_PK_ENTITY">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_LONG_PK_ENTITY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="UUID" type="UUID"/>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="test">
+        <createTable tableName="TEST_STRING_PK_ENTITY">
+            <column name="ID" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_STRING_PK_ENTITY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="UUID" type="UUID"/>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="10" author="test">
+        <createTable tableName="TEST_UUID_PK_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_UUID_PK_ENTITY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="test">
+        <createTable tableName="TEST_COMPOSITE_PK_ENTITY">
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="UUID" type="UUID"/>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="DATETIME"/>
+            <column name="PK_NAME" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_COMPOSITE_PK_ENTITY"/>
+            </column>
+            <column name="PK_VERSION" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_COMPOSITE_PK_ENTITY"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="12" author="test">
+        <createTable tableName="TEST_TEXTUAL_REF_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_TEXTUAL_REF_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ONE_TO_ONE_REF_ID" type="UUID"/>
+            <column name="MANY_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13" author="test">
+        <createTable tableName="TEST_TEXTUAL_ROOT_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_TEXTUAL_ROOT_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ONE_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="14" author="test">
+        <createTable tableName="TEST_TEXTUAL_SUB_REF_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_TEXTUAL_SUB_REF_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="MANY_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="15" author="test">
+        <addForeignKeyConstraint baseColumnNames="ONE_TO_ONE_REF_ID" baseTableName="TEST_TEXTUAL_ROOT_ENTITY"
+                                 constraintName="FK_TESTTEXTUALR_ON_ONETOONEREF" referencedColumnNames="ID"
+                                 referencedTableName="TEST_TEXTUAL_REF_ENTITY"/>
+    </changeSet>
+    <changeSet id="16" author="test">
+        <addForeignKeyConstraint baseColumnNames="MANY_TO_ONE_REF_ID" baseTableName="TEST_TEXTUAL_REF_ENTITY"
+                                 constraintName="FK_TESTTEXTUAL_ON_MANYTOONERE" referencedColumnNames="ID"
+                                 referencedTableName="TEST_TEXTUAL_ROOT_ENTITY"/>
+    </changeSet>
 </databaseChangeLog>

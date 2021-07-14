@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package test_support;
+package test_support.indexing;
 
-import io.jmix.core.annotation.JmixModule;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import io.jmix.search.index.annotation.AutoMappedField;
+import io.jmix.search.index.annotation.JmixEntitySearchIndex;
+import test_support.entity.indexing.TestCompositePkEntity;
 
-@Configuration
-@JmixModule
-@Import({BaseSearchTestConfiguration.class})
-public class IndexDefinitionProcessingTestConfiguration {
+@JmixEntitySearchIndex(entity = TestCompositePkEntity.class)
+public interface TestCompositePkIndexDefinition {
+
+    @AutoMappedField(includeProperties = "name")
+    void mapping();
 }

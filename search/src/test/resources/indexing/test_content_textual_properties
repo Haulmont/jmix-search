@@ -1,0 +1,28 @@
+{
+	"_instance_name": "rootEntity",
+	"oneToOneRef": {
+		"oneToOneRef": {
+			"name": "oneToOneSubRef"
+		},
+		"name": "oneToOneRef"
+	},
+	"name": "rootEntity",
+	"oneToManyRef": {
+		"oneToOneRef": {
+			"name": [
+				"oneToOneSubRef"
+			]
+		},
+		"name": [
+			"oneToManyRef1",
+			"oneToManyRef2"
+		],
+		"oneToManyRef": {
+			"name": [
+				"oneToManySubRef1",
+				"oneToManySubRef2",
+				"oneToManySubRef3"
+			]
+		}
+	}
+}
