@@ -21,6 +21,7 @@ import io.jmix.core.CoreConfiguration;
 import io.jmix.core.JmixModules;
 import io.jmix.core.Resources;
 import io.jmix.core.Stores;
+import io.jmix.core.impl.JmixMessageSource;
 import io.jmix.core.security.InMemoryUserRepository;
 import io.jmix.core.security.UserRepository;
 import io.jmix.data.DataConfiguration;
@@ -45,6 +46,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -77,16 +79,10 @@ public class BaseSearchTestConfiguration {
         return new TestNoopStartupIndexSynchronizer();
     }
 
-    /*@Bean
-    @Primary
-    public IndexDefinitionDetector indexDefinitionDetector(List<Class<?>> testAutoDetectableIndexDefinitionClasses) {
-        return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionClasses);
-    }*/
-
     @Bean
     @Primary
     public IndexDefinitionDetector indexDefinitionDetector(@Nullable TestAutoDetectableIndexDefinitionScope testAutoDetectableIndexDefinitionScope) {
-        return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionScope); //TestAutoDetectableIndexDefinitionScope
+        return new TestIndexDefinitionDetector(testAutoDetectableIndexDefinitionScope);
     }
 
     @Bean
@@ -143,5 +139,10 @@ public class BaseSearchTestConfiguration {
     @Primary
     PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JmixTransactionManager(Stores.MAIN, entityManagerFactory);
+    }
+
+    @Bean
+    public MessageSource messageSource(JmixModules modules, Resources resources) {
+        return new JmixMessageSource(modules, resources);
     }
 }

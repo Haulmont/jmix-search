@@ -1,0 +1,43 @@
+{
+	"_instance_name": "rootEntity",
+	"enumValue": [
+		"Open",
+		"ru_Open"
+	],
+	"oneToOneRef": {
+		"oneToOneRef": {
+			"enumValue": [
+				"Open",
+				"ru_Open"
+			]
+		},
+		"enumValue": [
+			"Open",
+			"ru_Open"
+		]
+	},
+	"oneToManyRef": {
+		"oneToOneRef": {
+			"enumValue": [
+				"Open",
+				"ru_Open"
+			]
+		},
+		"enumValue": [
+			"Open",
+			"ru_Open",
+			"Closed",
+			"ru_Closed"
+		],
+		"oneToManyRef": {
+			"enumValue": [
+				"Open",
+				"ru_Open",
+				"Closed",
+				"ru_Closed",
+				"Closed",
+				"ru_Closed"
+			]
+		}
+	}
+}

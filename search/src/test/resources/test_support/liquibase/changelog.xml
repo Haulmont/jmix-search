@@ -223,4 +223,83 @@
                                  constraintName="FK_TESTTEXTUAL_ON_MANYTOONERE" referencedColumnNames="ID"
                                  referencedTableName="TEST_TEXTUAL_ROOT_ENTITY"/>
     </changeSet>
+
+    <changeSet id="17" author="test">
+        <createTable tableName="TEST_ENUM_REF_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_ENUM_REF_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ENUM_VALUE" type="INT"/>
+            <column name="ONE_TO_ONE_REF_ID" type="UUID"/>
+            <column name="MANY_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18" author="test">
+        <createTable tableName="TEST_ENUM_ROOT_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_ENUM_ROOT_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ENUM_VALUE" type="INT"/>
+            <column name="ONE_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="19" author="test">
+        <createTable tableName="TEST_ENUM_SUB_REF_ENTITY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TEST_ENUM_SUB_REF_ENTITY"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_TS" type="DATETIME"/>
+            <column name="CREATED_BY" type="VARCHAR(50)"/>
+            <column name="UPDATE_TS" type="DATETIME"/>
+            <column name="UPDATED_BY" type="VARCHAR(50)"/>
+            <column name="DELETE_TS" type="DATETIME"/>
+            <column name="DELETED_BY" type="VARCHAR(50)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ENUM_VALUE" type="INT"/>
+            <column name="MANY_TO_ONE_REF_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="20" author="test">
+        <addForeignKeyConstraint baseColumnNames="ONE_TO_ONE_REF_ID" baseTableName="TEST_ENUM_REF_ENTITY"
+                                 constraintName="FK_TESTENUMREFE_ON_ONETOONEREF" referencedColumnNames="ID"
+                                 referencedTableName="TEST_ENUM_SUB_REF_ENTITY"/>
+    </changeSet>
+    <changeSet id="21" author="test">
+        <addForeignKeyConstraint baseColumnNames="MANY_TO_ONE_REF_ID" baseTableName="TEST_ENUM_REF_ENTITY"
+                                 constraintName="FK_TESTENUMREF_ON_MANYTOONERE" referencedColumnNames="ID"
+                                 referencedTableName="TEST_ENUM_ROOT_ENTITY"/>
+    </changeSet>
+    <changeSet id="22" author="test">
+        <addForeignKeyConstraint baseColumnNames="ONE_TO_ONE_REF_ID" baseTableName="TEST_ENUM_ROOT_ENTITY"
+                                 constraintName="FK_TESTENUMROOT_ON_ONETOONEREF" referencedColumnNames="ID"
+                                 referencedTableName="TEST_ENUM_REF_ENTITY"/>
+    </changeSet>
+    <changeSet id="23" author="test">
+        <addForeignKeyConstraint baseColumnNames="MANY_TO_ONE_REF_ID" baseTableName="TEST_ENUM_SUB_REF_ENTITY"
+                                 constraintName="FK_TESTENUMSUB_ON_MANYTOONERE" referencedColumnNames="ID"
+                                 referencedTableName="TEST_ENUM_REF_ENTITY"/>
+    </changeSet>
 </databaseChangeLog>

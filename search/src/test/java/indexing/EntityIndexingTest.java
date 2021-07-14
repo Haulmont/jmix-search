@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import test_support.*;
+import test_support.entity.TestEnum;
 import test_support.entity.indexing.*;
 
 import java.util.Arrays;
@@ -216,6 +217,75 @@ public class EntityIndexingTest {
         JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_textual_properties");
         TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
                 "search_index_test_textualrootentity",
+                idSerialization.idToString(Id.of(rootEntity)),
+                jsonNode
+        );
+        TestBulkRequestValidationData expectedData = new TestBulkRequestValidationData(
+                Collections.singletonList(expectedIndexAction),
+                Collections.emptyList());
+
+        entityIndexer.index(rootEntity);
+        List<BulkRequest> bulkRequests = bulkRequestsTracker.getBulkRequests();
+
+        TestBulkRequestValidationResult result = TestBulkRequestValidator.validate(Collections.singletonList(expectedData), bulkRequests);
+        Assert.assertFalse(result.toString(), result.hasFailures());
+    }
+
+    @Test
+    @DisplayName("Indexing of entity with various enum properties")
+    public void indexEnumContent() {
+        TestEnumSubRefEntity oneToOneSubRef = metadata.create(TestEnumSubRefEntity.class);
+        oneToOneSubRef.setName("oneToOneSubRef");
+        oneToOneSubRef.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToManySubRef1 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef1.setName("oneToManySubRef1");
+        oneToManySubRef1.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToManySubRef2 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef2.setName("oneToManySubRef2");
+        oneToManySubRef2.setEnumValue(TestEnum.CLOSED);
+        TestEnumSubRefEntity oneToManySubRef3 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef3.setName("oneToManySubRef3");
+        oneToManySubRef3.setEnumValue(TestEnum.CLOSED);
+
+        TestEnumRefEntity oneToOneRef = metadata.create(TestEnumRefEntity.class);
+        oneToOneRef.setName("oneToOneRef");
+        oneToOneRef.setEnumValue(TestEnum.OPEN);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
+        oneToManySubRef1.setManyToOneRef(oneToOneRef);
+        oneToManySubRef2.setManyToOneRef(oneToOneRef);
+
+        TestEnumRefEntity oneToManyRef1 = metadata.create(TestEnumRefEntity.class);
+        oneToManyRef1.setName("oneToManyRef1");
+        oneToManyRef1.setEnumValue(TestEnum.OPEN);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
+        oneToManySubRef1.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef2.setManyToOneRef(oneToManyRef1);
+
+        TestEnumRefEntity oneToManyRef2 = metadata.create(TestEnumRefEntity.class);
+        oneToManyRef2.setName("oneToManyRef2");
+        oneToManyRef2.setEnumValue(TestEnum.CLOSED);
+        oneToManyRef2.setOneToManyRef(Collections.singletonList(oneToManySubRef3));
+        oneToManySubRef3.setManyToOneRef(oneToManyRef2);
+
+        TestEnumRootEntity rootEntity = metadata.create(TestEnumRootEntity.class);
+        rootEntity.setName("rootEntity");
+        rootEntity.setEnumValue(TestEnum.OPEN);
+        rootEntity.setOneToOneRef(oneToOneRef);
+        rootEntity.setOneToManyRef(Arrays.asList(oneToManyRef1, oneToManyRef2));
+        oneToManyRef1.setManyToOneRef(rootEntity);
+        oneToManyRef2.setManyToOneRef(rootEntity);
+
+        dataManager.save(
+                rootEntity,
+                oneToOneRef, oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef, oneToManySubRef1, oneToManySubRef2, oneToManySubRef3
+        );
+
+        JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_enum_properties");
+        TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
+                "search_index_test_enumrootentity",
                 idSerialization.idToString(Id.of(rootEntity)),
                 jsonNode
         );

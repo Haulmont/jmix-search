@@ -20,6 +20,7 @@ import io.jmix.core.DataManager;
 import io.jmix.core.Metadata;
 import io.jmix.core.Stores;
 import io.jmix.core.annotation.JmixModule;
+import io.jmix.core.annotation.MessageSourceBasenames;
 import io.jmix.core.security.CoreSecurityConfiguration;
 import io.jmix.data.impl.liquibase.JmixLiquibase;
 import io.jmix.data.impl.liquibase.LiquibaseChangeLogProcessor;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.mock;
 @Import({BaseSearchTestConfiguration.class})
 @PropertySource("classpath:/test_support/test-entity-indexing-app.properties")
 @EnableWebSecurity
+@MessageSourceBasenames({"test_support/messages"})
 public class IndexingTestConfiguration extends CoreSecurityConfiguration {
 
     @Autowired
