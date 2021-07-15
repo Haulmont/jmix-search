@@ -17,10 +17,7 @@
 package indexing;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import io.jmix.core.DataManager;
-import io.jmix.core.Id;
-import io.jmix.core.IdSerialization;
-import io.jmix.core.Metadata;
+import io.jmix.core.*;
 import io.jmix.core.security.SystemAuthenticator;
 import io.jmix.search.index.EntityIndexer;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -37,6 +34,7 @@ import test_support.*;
 import test_support.entity.TestEnum;
 import test_support.entity.indexing.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +57,8 @@ public class EntityIndexingTest {
     protected SystemAuthenticator authenticator;
     @Autowired
     protected IdSerialization idSerialization;
+    @Autowired
+    protected TestFileStorage fileStorage;
 
     @BeforeEach
     public void setUp() {
@@ -286,6 +286,78 @@ public class EntityIndexingTest {
         JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_enum_properties");
         TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
                 "search_index_test_enumrootentity",
+                idSerialization.idToString(Id.of(rootEntity)),
+                jsonNode
+        );
+        TestBulkRequestValidationData expectedData = new TestBulkRequestValidationData(
+                Collections.singletonList(expectedIndexAction),
+                Collections.emptyList());
+
+        entityIndexer.index(rootEntity);
+        List<BulkRequest> bulkRequests = bulkRequestsTracker.getBulkRequests();
+
+        TestBulkRequestValidationResult result = TestBulkRequestValidator.validate(Collections.singletonList(expectedData), bulkRequests);
+        Assert.assertFalse(result.toString(), result.hasFailures());
+    }
+
+
+    @Test
+    @DisplayName("Indexing of entity with various file properties")
+    public void indexFileContent() {
+        FileRef fileRef = fileStorage.saveStream("testFile.txt", new ByteArrayInputStream("Test file content".getBytes()));
+
+        TestFileSubRefEntity oneToOneSubRef = metadata.create(TestFileSubRefEntity.class);
+        oneToOneSubRef.setName("oneToOneSubRef");
+        oneToOneSubRef.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef1 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef1.setName("oneToManySubRef1");
+        oneToManySubRef1.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef2 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef2.setName("oneToManySubRef2");
+        oneToManySubRef2.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef3 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef3.setName("oneToManySubRef3");
+        oneToManySubRef3.setFileValue(fileRef);
+
+        TestFileRefEntity oneToOneRef = metadata.create(TestFileRefEntity.class);
+        oneToOneRef.setName("oneToOneRef");
+        oneToOneRef.setFileValue(fileRef);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
+        oneToManySubRef1.setManyToOneRef(oneToOneRef);
+        oneToManySubRef2.setManyToOneRef(oneToOneRef);
+
+        TestFileRefEntity oneToManyRef1 = metadata.create(TestFileRefEntity.class);
+        oneToManyRef1.setName("oneToManyRef1");
+        oneToManyRef1.setFileValue(fileRef);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
+        oneToManySubRef1.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef2.setManyToOneRef(oneToManyRef1);
+
+        TestFileRefEntity oneToManyRef2 = metadata.create(TestFileRefEntity.class);
+        oneToManyRef2.setName("oneToManyRef2");
+        oneToManyRef2.setFileValue(fileRef);
+        oneToManyRef2.setOneToManyRef(Collections.singletonList(oneToManySubRef3));
+        oneToManySubRef3.setManyToOneRef(oneToManyRef2);
+
+        TestFileRootEntity rootEntity = metadata.create(TestFileRootEntity.class);
+        rootEntity.setName("rootEntity");
+        rootEntity.setFileValue(fileRef);
+        rootEntity.setOneToOneRef(oneToOneRef);
+        rootEntity.setOneToManyRef(Arrays.asList(oneToManyRef1, oneToManyRef2));
+        oneToManyRef1.setManyToOneRef(rootEntity);
+        oneToManyRef2.setManyToOneRef(rootEntity);
+
+        dataManager.save(
+                rootEntity,
+                oneToOneRef, oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef, oneToManySubRef1, oneToManySubRef2, oneToManySubRef3
+        );
+
+        JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_file_properties");
+        TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
+                "search_index_test_filerootentity",
                 idSerialization.idToString(Id.of(rootEntity)),
                 jsonNode
         );

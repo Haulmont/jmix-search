@@ -85,4 +85,10 @@ public class IndexingTestConfiguration extends CoreSecurityConfiguration {
         Mockito.when(mock.isIndexAvailable(anyString())).thenReturn(true);
         return mock;
     }
+
+    @Bean
+    @Primary
+    public TestFileStorage testFileStorage() {
+        return new TestFileStorage();
+    }
 }
