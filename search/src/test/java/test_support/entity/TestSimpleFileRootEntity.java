@@ -26,9 +26,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @JmixEntity
-@Entity(name = "test_FileRootEntity")
-@Table(name = "TEST_FILE_ROOT_ENTITY")
-public class TestFileRootEntity extends BaseEntity {
+@Entity(name = "test_SimpleFileRootEntity")
+@Table(name = "TEST_SIMPLE_FILE_ROOT_ENTITY")
+public class TestSimpleFileRootEntity extends BaseEntity {
 
     @InstanceName
     @Column(name = "NAME")

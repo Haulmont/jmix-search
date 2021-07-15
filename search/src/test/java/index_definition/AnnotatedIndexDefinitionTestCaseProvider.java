@@ -17,7 +17,7 @@
 package index_definition;
 
 import org.junit.jupiter.params.provider.Arguments;
-import test_support.entity.TestFileRootEntity;
+import test_support.entity.TestSimpleFileRootEntity;
 import test_support.entity.TestRootEntity;
 import test_support.entity.TestRootEntityWithEmbedded;
 import test_support.entity.TestSimpleRootEntity;
@@ -143,17 +143,17 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
         return Stream.of(
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("File property is mapped with fileName and content fields")
                         .indexDefinitionClass(TestIncludeLocalFilePropertyIndexDefinition.class)
-                        .expectedEntityName("test_FileRootEntity")
-                        .expectedIndexName("search_index_test_filerootentity")
-                        .expectedEntityClass(TestFileRootEntity.class)
+                        .expectedEntityName("test_SimpleFileRootEntity")
+                        .expectedIndexName("search_index_test_simplefilerootentity")
+                        .expectedEntityClass(TestSimpleFileRootEntity.class)
                         .pathToFileWithExpectedMapping("index_definition/file/test_mapping_include_local_file_property")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("File content field is still present in mapping with disabled content indexing")
                         .indexDefinitionClass(TestIncludeLocalFilePropertyWithoutContentIndexDefinition.class)
-                        .expectedEntityName("test_FileRootEntity")
-                        .expectedIndexName("search_index_test_filerootentity")
-                        .expectedEntityClass(TestFileRootEntity.class)
+                        .expectedEntityName("test_SimpleFileRootEntity")
+                        .expectedIndexName("search_index_test_simplefilerootentity")
+                        .expectedEntityClass(TestSimpleFileRootEntity.class)
                         .pathToFileWithExpectedMapping("index_definition/file/test_mapping_include_local_file_property")
                         .build()
                 )

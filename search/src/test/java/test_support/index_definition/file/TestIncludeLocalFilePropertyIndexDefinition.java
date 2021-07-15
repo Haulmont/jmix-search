@@ -18,9 +18,9 @@ package test_support.index_definition.file;
 
 import io.jmix.search.index.annotation.AutoMappedField;
 import io.jmix.search.index.annotation.JmixEntitySearchIndex;
-import test_support.entity.TestFileRootEntity;
+import test_support.entity.TestSimpleFileRootEntity;
 
-@JmixEntitySearchIndex(entity = TestFileRootEntity.class)
+@JmixEntitySearchIndex(entity = TestSimpleFileRootEntity.class)
 public interface TestIncludeLocalFilePropertyIndexDefinition {
 
     @AutoMappedField(includeProperties = {"name", "fileValue"})
