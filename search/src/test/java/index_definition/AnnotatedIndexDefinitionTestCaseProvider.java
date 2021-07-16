@@ -19,7 +19,7 @@ package index_definition;
 import org.junit.jupiter.params.provider.Arguments;
 import test_support.entity.TestSimpleFileRootEntity;
 import test_support.entity.TestRootEntity;
-import test_support.entity.TestRootEntityWithEmbedded;
+import test_support.entity.TestSimpleEmbeddedRootEntity;
 import test_support.entity.TestSimpleRootEntity;
 import test_support.index_definition.common.*;
 import test_support.index_definition.embedded.TestIncludeAllEmbeddablePropertiesIndexDefinition;
@@ -164,25 +164,25 @@ public class AnnotatedIndexDefinitionTestCaseProvider {
         return Stream.of(
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Inclusion of embedded property includes all embeddable properties")
                         .indexDefinitionClass(TestIncludeEmbeddedPropertyIndexDefinition.class)
-                        .expectedEntityName("test_RootEntityWithEmbedded")
-                        .expectedIndexName("search_index_test_rootentitywithembedded")
-                        .expectedEntityClass(TestRootEntityWithEmbedded.class)
+                        .expectedEntityName("test_SimpleEmbRootEntity")
+                        .expectedIndexName("search_index_test_simpleembrootentity")
+                        .expectedEntityClass(TestSimpleEmbeddedRootEntity.class)
                         .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_all_embeddable_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Embedded-level wildcard includes all supported embeddable properties")
                         .indexDefinitionClass(TestIncludeAllEmbeddablePropertiesIndexDefinition.class)
-                        .expectedEntityName("test_RootEntityWithEmbedded")
-                        .expectedIndexName("search_index_test_rootentitywithembedded")
-                        .expectedEntityClass(TestRootEntityWithEmbedded.class)
+                        .expectedEntityName("test_SimpleEmbRootEntity")
+                        .expectedIndexName("search_index_test_simpleembrootentity")
+                        .expectedEntityClass(TestSimpleEmbeddedRootEntity.class)
                         .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_all_embeddable_properties")
                         .build()
                 ),
                 Arguments.of(AnnotatedIndexDefinitionProcessorTestCase.builder("Specified embeddable properties are included to mapping if supported")
                         .indexDefinitionClass(TestIncludeSpecificEmbeddablePropertyIndexDefinition.class)
-                        .expectedEntityName("test_RootEntityWithEmbedded")
-                        .expectedIndexName("search_index_test_rootentitywithembedded")
-                        .expectedEntityClass(TestRootEntityWithEmbedded.class)
+                        .expectedEntityName("test_SimpleEmbRootEntity")
+                        .expectedIndexName("search_index_test_simpleembrootentity")
+                        .expectedEntityClass(TestSimpleEmbeddedRootEntity.class)
                         .pathToFileWithExpectedMapping("index_definition/embedded/test_mapping_include_specific_embeddable_property")
                         .build()
                 )

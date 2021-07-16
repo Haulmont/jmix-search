@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
-package test_support.index_definition.embedded;
+package test_support.indexing;
 
 import io.jmix.search.index.annotation.AutoMappedField;
 import io.jmix.search.index.annotation.JmixEntitySearchIndex;
-import test_support.entity.TestSimpleEmbeddedRootEntity;
+import test_support.entity.indexing.TestEmbeddedRootEntity;
 
-@JmixEntitySearchIndex(entity = TestSimpleEmbeddedRootEntity.class)
-public interface TestIncludeAllEmbeddablePropertiesIndexDefinition {
+@JmixEntitySearchIndex(entity = TestEmbeddedRootEntity.class)
+public interface TestEmbeddedEntityIndexDefinition {
 
-    @AutoMappedField(includeProperties = {"name", "embedded.*"})
+    @AutoMappedField(includeProperties = {
+            "embedded",
+            "oneToOneRef.embedded",
+            "oneToManyRef.embedded",
+            "oneToOneRef.oneToOneRef.embedded",
+            "oneToOneRef.oneToManyRef.embedded",
+            "oneToManyRef.oneToOneRef.embedded",
+            "oneToManyRef.oneToManyRef.embedded"
+    })
     void mapping();
 }

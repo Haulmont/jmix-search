@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import test_support.*;
+import test_support.entity.TestEmbeddableEntity;
 import test_support.entity.TestEnum;
 import test_support.entity.indexing.*;
 
@@ -173,34 +174,52 @@ public class EntityIndexingTest {
     @Test
     @DisplayName("Indexing of entity with various textual properties")
     public void indexTextualContent() {
-        TestTextualSubRefEntity oneToOneSubRef = metadata.create(TestTextualSubRefEntity.class);
-        oneToOneSubRef.setName("oneToOneSubRef");
-        TestTextualSubRefEntity oneToManySubRef1 = metadata.create(TestTextualSubRefEntity.class);
-        oneToManySubRef1.setName("oneToManySubRef1");
-        TestTextualSubRefEntity oneToManySubRef2 = metadata.create(TestTextualSubRefEntity.class);
-        oneToManySubRef2.setName("oneToManySubRef2");
-        TestTextualSubRefEntity oneToManySubRef3 = metadata.create(TestTextualSubRefEntity.class);
-        oneToManySubRef3.setName("oneToManySubRef3");
+        // Sub References
+        TestTextualSubRefEntity oneToOneSubRef1 = metadata.create(TestTextualSubRefEntity.class);
+        oneToOneSubRef1.setName("oneToOneSubRef1");
+        TestTextualSubRefEntity oneToOneSubRef2 = metadata.create(TestTextualSubRefEntity.class);
+        oneToOneSubRef2.setName("oneToOneSubRef2");
+        TestTextualSubRefEntity oneToOneSubRef3 = metadata.create(TestTextualSubRefEntity.class);
+        oneToOneSubRef3.setName("oneToOneSubRef3");
 
+        TestTextualSubRefEntity oneToManySubRef11 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef11.setName("oneToManySubRef11");
+        TestTextualSubRefEntity oneToManySubRef12 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef12.setName("oneToManySubRef12");
+
+        TestTextualSubRefEntity oneToManySubRef21 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef21.setName("oneToManySubRef21");
+        TestTextualSubRefEntity oneToManySubRef22 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef22.setName("oneToManySubRef22");
+
+        TestTextualSubRefEntity oneToManySubRef31 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef31.setName("oneToManySubRef31");
+        TestTextualSubRefEntity oneToManySubRef32 = metadata.create(TestTextualSubRefEntity.class);
+        oneToManySubRef32.setName("oneToManySubRef32");
+
+        // References
         TestTextualRefEntity oneToOneRef = metadata.create(TestTextualRefEntity.class);
         oneToOneRef.setName("oneToOneRef");
-        oneToOneRef.setOneToOneRef(oneToOneSubRef);
-        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToOneRef);
-        oneToManySubRef2.setManyToOneRef(oneToOneRef);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef1);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef11, oneToManySubRef12));
+        oneToManySubRef11.setManyToOneRef(oneToOneRef);
+        oneToManySubRef12.setManyToOneRef(oneToOneRef);
 
         TestTextualRefEntity oneToManyRef1 = metadata.create(TestTextualRefEntity.class);
         oneToManyRef1.setName("oneToManyRef1");
-        oneToManyRef1.setOneToOneRef(oneToOneSubRef);
-        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToManyRef1);
-        oneToManySubRef2.setManyToOneRef(oneToManyRef1);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef2);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef21, oneToManySubRef22));
+        oneToManySubRef21.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef22.setManyToOneRef(oneToManyRef1);
 
         TestTextualRefEntity oneToManyRef2 = metadata.create(TestTextualRefEntity.class);
         oneToManyRef2.setName("oneToManyRef2");
-        oneToManyRef2.setOneToManyRef(Collections.singletonList(oneToManySubRef3));
-        oneToManySubRef3.setManyToOneRef(oneToManyRef2);
+        oneToManyRef2.setOneToOneRef(oneToOneSubRef3);
+        oneToManyRef2.setOneToManyRef(Arrays.asList(oneToManySubRef31, oneToManySubRef32));
+        oneToManySubRef31.setManyToOneRef(oneToManyRef2);
+        oneToManySubRef32.setManyToOneRef(oneToManyRef2);
 
+        // Root
         TestTextualRootEntity rootEntity = metadata.create(TestTextualRootEntity.class);
         rootEntity.setName("rootEntity");
         rootEntity.setOneToOneRef(oneToOneRef);
@@ -210,8 +229,12 @@ public class EntityIndexingTest {
 
         dataManager.save(
                 rootEntity,
-                oneToOneRef, oneToManyRef1, oneToManyRef2,
-                oneToOneSubRef, oneToManySubRef1, oneToManySubRef2, oneToManySubRef3
+                oneToOneRef,
+                oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef1, oneToOneSubRef2, oneToOneSubRef3,
+                oneToManySubRef11, oneToManySubRef12,
+                oneToManySubRef21, oneToManySubRef22,
+                oneToManySubRef31, oneToManySubRef32
         );
 
         JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_textual_properties");
@@ -234,41 +257,64 @@ public class EntityIndexingTest {
     @Test
     @DisplayName("Indexing of entity with various enum properties")
     public void indexEnumContent() {
-        TestEnumSubRefEntity oneToOneSubRef = metadata.create(TestEnumSubRefEntity.class);
-        oneToOneSubRef.setName("oneToOneSubRef");
-        oneToOneSubRef.setEnumValue(TestEnum.OPEN);
-        TestEnumSubRefEntity oneToManySubRef1 = metadata.create(TestEnumSubRefEntity.class);
-        oneToManySubRef1.setName("oneToManySubRef1");
-        oneToManySubRef1.setEnumValue(TestEnum.OPEN);
-        TestEnumSubRefEntity oneToManySubRef2 = metadata.create(TestEnumSubRefEntity.class);
-        oneToManySubRef2.setName("oneToManySubRef2");
-        oneToManySubRef2.setEnumValue(TestEnum.CLOSED);
-        TestEnumSubRefEntity oneToManySubRef3 = metadata.create(TestEnumSubRefEntity.class);
-        oneToManySubRef3.setName("oneToManySubRef3");
-        oneToManySubRef3.setEnumValue(TestEnum.CLOSED);
+        // Sub References
+        TestEnumSubRefEntity oneToOneSubRef1 = metadata.create(TestEnumSubRefEntity.class);
+        oneToOneSubRef1.setName("oneToOneSubRef1");
+        oneToOneSubRef1.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToOneSubRef2 = metadata.create(TestEnumSubRefEntity.class);
+        oneToOneSubRef2.setName("oneToOneSubRef2");
+        oneToOneSubRef2.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToOneSubRef3 = metadata.create(TestEnumSubRefEntity.class);
+        oneToOneSubRef3.setName("oneToOneSubRef3");
+        oneToOneSubRef3.setEnumValue(TestEnum.CLOSED);
 
+        TestEnumSubRefEntity oneToManySubRef11 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef11.setName("oneToManySubRef11");
+        oneToManySubRef11.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToManySubRef12 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef12.setName("oneToManySubRef12");
+        oneToManySubRef12.setEnumValue(TestEnum.CLOSED);
+
+        TestEnumSubRefEntity oneToManySubRef21 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef21.setName("oneToManySubRef21");
+        oneToManySubRef21.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToManySubRef22 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef22.setName("oneToManySubRef22");
+        oneToManySubRef22.setEnumValue(TestEnum.CLOSED);
+
+        TestEnumSubRefEntity oneToManySubRef31 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef31.setName("oneToManySubRef31");
+        oneToManySubRef31.setEnumValue(TestEnum.OPEN);
+        TestEnumSubRefEntity oneToManySubRef32 = metadata.create(TestEnumSubRefEntity.class);
+        oneToManySubRef32.setName("oneToManySubRef32");
+        oneToManySubRef32.setEnumValue(TestEnum.CLOSED);
+
+        // References
         TestEnumRefEntity oneToOneRef = metadata.create(TestEnumRefEntity.class);
         oneToOneRef.setName("oneToOneRef");
         oneToOneRef.setEnumValue(TestEnum.OPEN);
-        oneToOneRef.setOneToOneRef(oneToOneSubRef);
-        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToOneRef);
-        oneToManySubRef2.setManyToOneRef(oneToOneRef);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef1);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef11, oneToManySubRef12));
+        oneToManySubRef11.setManyToOneRef(oneToOneRef);
+        oneToManySubRef12.setManyToOneRef(oneToOneRef);
 
         TestEnumRefEntity oneToManyRef1 = metadata.create(TestEnumRefEntity.class);
         oneToManyRef1.setName("oneToManyRef1");
         oneToManyRef1.setEnumValue(TestEnum.OPEN);
-        oneToManyRef1.setOneToOneRef(oneToOneSubRef);
-        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToManyRef1);
-        oneToManySubRef2.setManyToOneRef(oneToManyRef1);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef2);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef21, oneToManySubRef22));
+        oneToManySubRef21.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef22.setManyToOneRef(oneToManyRef1);
 
         TestEnumRefEntity oneToManyRef2 = metadata.create(TestEnumRefEntity.class);
         oneToManyRef2.setName("oneToManyRef2");
         oneToManyRef2.setEnumValue(TestEnum.CLOSED);
-        oneToManyRef2.setOneToManyRef(Collections.singletonList(oneToManySubRef3));
-        oneToManySubRef3.setManyToOneRef(oneToManyRef2);
+        oneToManyRef2.setOneToOneRef(oneToOneSubRef3);
+        oneToManyRef2.setOneToManyRef(Arrays.asList(oneToManySubRef31, oneToManySubRef32));
+        oneToManySubRef31.setManyToOneRef(oneToManyRef2);
+        oneToManySubRef32.setManyToOneRef(oneToManyRef2);
 
+        // Root
         TestEnumRootEntity rootEntity = metadata.create(TestEnumRootEntity.class);
         rootEntity.setName("rootEntity");
         rootEntity.setEnumValue(TestEnum.OPEN);
@@ -279,8 +325,12 @@ public class EntityIndexingTest {
 
         dataManager.save(
                 rootEntity,
-                oneToOneRef, oneToManyRef1, oneToManyRef2,
-                oneToOneSubRef, oneToManySubRef1, oneToManySubRef2, oneToManySubRef3
+                oneToOneRef,
+                oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef1, oneToOneSubRef2, oneToOneSubRef3,
+                oneToManySubRef11, oneToManySubRef12,
+                oneToManySubRef21, oneToManySubRef22,
+                oneToManySubRef31, oneToManySubRef32
         );
 
         JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_enum_properties");
@@ -306,41 +356,64 @@ public class EntityIndexingTest {
     public void indexFileContent() {
         FileRef fileRef = fileStorage.saveStream("testFile.txt", new ByteArrayInputStream("Test file content".getBytes()));
 
-        TestFileSubRefEntity oneToOneSubRef = metadata.create(TestFileSubRefEntity.class);
-        oneToOneSubRef.setName("oneToOneSubRef");
-        oneToOneSubRef.setFileValue(fileRef);
-        TestFileSubRefEntity oneToManySubRef1 = metadata.create(TestFileSubRefEntity.class);
-        oneToManySubRef1.setName("oneToManySubRef1");
-        oneToManySubRef1.setFileValue(fileRef);
-        TestFileSubRefEntity oneToManySubRef2 = metadata.create(TestFileSubRefEntity.class);
-        oneToManySubRef2.setName("oneToManySubRef2");
-        oneToManySubRef2.setFileValue(fileRef);
-        TestFileSubRefEntity oneToManySubRef3 = metadata.create(TestFileSubRefEntity.class);
-        oneToManySubRef3.setName("oneToManySubRef3");
-        oneToManySubRef3.setFileValue(fileRef);
+        // Sub References
+        TestFileSubRefEntity oneToOneSubRef1 = metadata.create(TestFileSubRefEntity.class);
+        oneToOneSubRef1.setName("oneToOneSubRef1");
+        oneToOneSubRef1.setFileValue(fileRef);
+        TestFileSubRefEntity oneToOneSubRef2 = metadata.create(TestFileSubRefEntity.class);
+        oneToOneSubRef2.setName("oneToOneSubRef2");
+        oneToOneSubRef2.setFileValue(fileRef);
+        TestFileSubRefEntity oneToOneSubRef3 = metadata.create(TestFileSubRefEntity.class);
+        oneToOneSubRef3.setName("oneToOneSubRef3");
+        oneToOneSubRef3.setFileValue(fileRef);
 
+        TestFileSubRefEntity oneToManySubRef11 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef11.setName("oneToManySubRef11");
+        oneToManySubRef11.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef12 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef12.setName("oneToManySubRef12");
+        oneToManySubRef12.setFileValue(fileRef);
+
+        TestFileSubRefEntity oneToManySubRef21 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef21.setName("oneToManySubRef21");
+        oneToManySubRef21.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef22 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef22.setName("oneToManySubRef22");
+        oneToManySubRef22.setFileValue(fileRef);
+
+        TestFileSubRefEntity oneToManySubRef31 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef31.setName("oneToManySubRef31");
+        oneToManySubRef31.setFileValue(fileRef);
+        TestFileSubRefEntity oneToManySubRef32 = metadata.create(TestFileSubRefEntity.class);
+        oneToManySubRef32.setName("oneToManySubRef32");
+        oneToManySubRef32.setFileValue(fileRef);
+
+        // References
         TestFileRefEntity oneToOneRef = metadata.create(TestFileRefEntity.class);
         oneToOneRef.setName("oneToOneRef");
         oneToOneRef.setFileValue(fileRef);
-        oneToOneRef.setOneToOneRef(oneToOneSubRef);
-        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToOneRef);
-        oneToManySubRef2.setManyToOneRef(oneToOneRef);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef1);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef11, oneToManySubRef12));
+        oneToManySubRef11.setManyToOneRef(oneToOneRef);
+        oneToManySubRef12.setManyToOneRef(oneToOneRef);
 
         TestFileRefEntity oneToManyRef1 = metadata.create(TestFileRefEntity.class);
         oneToManyRef1.setName("oneToManyRef1");
         oneToManyRef1.setFileValue(fileRef);
-        oneToManyRef1.setOneToOneRef(oneToOneSubRef);
-        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef1, oneToManySubRef2));
-        oneToManySubRef1.setManyToOneRef(oneToManyRef1);
-        oneToManySubRef2.setManyToOneRef(oneToManyRef1);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef2);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef21, oneToManySubRef22));
+        oneToManySubRef21.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef22.setManyToOneRef(oneToManyRef1);
 
         TestFileRefEntity oneToManyRef2 = metadata.create(TestFileRefEntity.class);
         oneToManyRef2.setName("oneToManyRef2");
         oneToManyRef2.setFileValue(fileRef);
-        oneToManyRef2.setOneToManyRef(Collections.singletonList(oneToManySubRef3));
-        oneToManySubRef3.setManyToOneRef(oneToManyRef2);
+        oneToManyRef2.setOneToOneRef(oneToOneSubRef3);
+        oneToManyRef2.setOneToManyRef(Arrays.asList(oneToManySubRef31, oneToManySubRef32));
+        oneToManySubRef31.setManyToOneRef(oneToManyRef2);
+        oneToManySubRef32.setManyToOneRef(oneToManyRef2);
 
+        // Root
         TestFileRootEntity rootEntity = metadata.create(TestFileRootEntity.class);
         rootEntity.setName("rootEntity");
         rootEntity.setFileValue(fileRef);
@@ -351,13 +424,118 @@ public class EntityIndexingTest {
 
         dataManager.save(
                 rootEntity,
-                oneToOneRef, oneToManyRef1, oneToManyRef2,
-                oneToOneSubRef, oneToManySubRef1, oneToManySubRef2, oneToManySubRef3
+                oneToOneRef,
+                oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef1, oneToOneSubRef2, oneToOneSubRef3,
+                oneToManySubRef11, oneToManySubRef12,
+                oneToManySubRef21, oneToManySubRef22,
+                oneToManySubRef31, oneToManySubRef32
         );
 
         JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_file_properties");
         TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
                 "search_index_test_filerootentity",
+                idSerialization.idToString(Id.of(rootEntity)),
+                jsonNode
+        );
+        TestBulkRequestValidationData expectedData = new TestBulkRequestValidationData(
+                Collections.singletonList(expectedIndexAction),
+                Collections.emptyList());
+
+        entityIndexer.index(rootEntity);
+        List<BulkRequest> bulkRequests = bulkRequestsTracker.getBulkRequests();
+
+        TestBulkRequestValidationResult result = TestBulkRequestValidator.validate(Collections.singletonList(expectedData), bulkRequests);
+        Assert.assertFalse(result.toString(), result.hasFailures());
+    }
+
+    @Test
+    @DisplayName("Indexing of entity with various embedded properties")
+    public void indexEmbeddedContent() {
+        TestEmbeddableEntity embeddableEntity = metadata.create(TestEmbeddableEntity.class);
+        embeddableEntity.setEnumValue(TestEnum.OPEN);
+        embeddableEntity.setTextValue("Embedded text value");
+        embeddableEntity.setIntValue(1);
+
+        // Sub References
+        TestEmbeddedSubRefEntity oneToOneSubRef1 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToOneSubRef1.setName("oneToOneSubRef1");
+        oneToOneSubRef1.setEmbedded(embeddableEntity);
+        TestEmbeddedSubRefEntity oneToOneSubRef2 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToOneSubRef2.setName("oneToOneSubRef2");
+        oneToOneSubRef2.setEmbedded(embeddableEntity);
+        TestEmbeddedSubRefEntity oneToOneSubRef3 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToOneSubRef3.setName("oneToOneSubRef3");
+        oneToOneSubRef3.setEmbedded(embeddableEntity);
+
+        TestEmbeddedSubRefEntity oneToManySubRef11 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef11.setName("oneToManySubRef11");
+        oneToManySubRef11.setEmbedded(embeddableEntity);
+        TestEmbeddedSubRefEntity oneToManySubRef12 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef12.setName("oneToManySubRef12");
+        oneToManySubRef12.setEmbedded(embeddableEntity);
+
+        TestEmbeddedSubRefEntity oneToManySubRef21 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef21.setName("oneToManySubRef21");
+        oneToManySubRef21.setEmbedded(embeddableEntity);
+        TestEmbeddedSubRefEntity oneToManySubRef22 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef22.setName("oneToManySubRef22");
+        oneToManySubRef22.setEmbedded(embeddableEntity);
+
+        TestEmbeddedSubRefEntity oneToManySubRef31 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef31.setName("oneToManySubRef31");
+        oneToManySubRef31.setEmbedded(embeddableEntity);
+        TestEmbeddedSubRefEntity oneToManySubRef32 = metadata.create(TestEmbeddedSubRefEntity.class);
+        oneToManySubRef32.setName("oneToManySubRef32");
+        oneToManySubRef32.setEmbedded(embeddableEntity);
+
+        // References
+        TestEmbeddedRefEntity oneToOneRef = metadata.create(TestEmbeddedRefEntity.class);
+        oneToOneRef.setName("oneToOneRef");
+        oneToOneRef.setEmbedded(embeddableEntity);
+        oneToOneRef.setOneToOneRef(oneToOneSubRef1);
+        oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef11, oneToManySubRef12));
+        oneToManySubRef11.setManyToOneRef(oneToOneRef);
+        oneToManySubRef12.setManyToOneRef(oneToOneRef);
+
+        TestEmbeddedRefEntity oneToManyRef1 = metadata.create(TestEmbeddedRefEntity.class);
+        oneToManyRef1.setName("oneToManyRef1");
+        oneToManyRef1.setEmbedded(embeddableEntity);
+        oneToManyRef1.setOneToOneRef(oneToOneSubRef2);
+        oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef21, oneToManySubRef22));
+        oneToManySubRef21.setManyToOneRef(oneToManyRef1);
+        oneToManySubRef22.setManyToOneRef(oneToManyRef1);
+
+        TestEmbeddedRefEntity oneToManyRef2 = metadata.create(TestEmbeddedRefEntity.class);
+        oneToManyRef2.setName("oneToManyRef2");
+        oneToManyRef2.setEmbedded(embeddableEntity);
+        oneToManyRef2.setOneToOneRef(oneToOneSubRef3);
+        oneToManyRef2.setOneToManyRef(Arrays.asList(oneToManySubRef31, oneToManySubRef32));
+        oneToManySubRef31.setManyToOneRef(oneToManyRef2);
+        oneToManySubRef32.setManyToOneRef(oneToManyRef2);
+
+        // Root
+        TestEmbeddedRootEntity rootEntity = metadata.create(TestEmbeddedRootEntity.class);
+        rootEntity.setName("rootEntity");
+        rootEntity.setEmbedded(embeddableEntity);
+        rootEntity.setOneToOneRef(oneToOneRef);
+        rootEntity.setOneToManyRef(Arrays.asList(oneToManyRef1, oneToManyRef2));
+        oneToManyRef1.setManyToOneRef(rootEntity);
+        oneToManyRef2.setManyToOneRef(rootEntity);
+
+        dataManager.save(
+                rootEntity,
+                oneToOneRef,
+                oneToManyRef1, oneToManyRef2,
+                oneToOneSubRef1, oneToOneSubRef2, oneToOneSubRef3,
+                oneToManySubRef11, oneToManySubRef12,
+                oneToManySubRef21, oneToManySubRef22,
+                oneToManySubRef31, oneToManySubRef32
+        );
+
+        JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_embedded_properties");
+        TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
+                "search_index_test_embrootentity",
                 idSerialization.idToString(Id.of(rootEntity)),
                 jsonNode
         );

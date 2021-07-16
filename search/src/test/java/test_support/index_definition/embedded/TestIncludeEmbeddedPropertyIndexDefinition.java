@@ -18,9 +18,9 @@ package test_support.index_definition.embedded;
 
 import io.jmix.search.index.annotation.AutoMappedField;
 import io.jmix.search.index.annotation.JmixEntitySearchIndex;
-import test_support.entity.TestRootEntityWithEmbedded;
+import test_support.entity.TestSimpleEmbeddedRootEntity;
 
-@JmixEntitySearchIndex(entity = TestRootEntityWithEmbedded.class)
+@JmixEntitySearchIndex(entity = TestSimpleEmbeddedRootEntity.class)
 public interface TestIncludeEmbeddedPropertyIndexDefinition {
 
     @AutoMappedField(includeProperties = {"name", "embedded"})

@@ -25,8 +25,14 @@ public interface TestTextualEntityIndexDefinition {
 
     @AutoMappedField(includeProperties = {
             "name",
+            "oneToOneRef",
+            "oneToManyRef",
             "oneToOneRef.name",
             "oneToManyRef.name",
+            "oneToOneRef.oneToOneRef",
+            "oneToOneRef.oneToManyRef",
+            "oneToManyRef.oneToOneRef",
+            "oneToManyRef.oneToManyRef",
             "oneToOneRef.oneToOneRef.name",
             "oneToOneRef.oneToManyRef.name",
             "oneToManyRef.oneToOneRef.name",
