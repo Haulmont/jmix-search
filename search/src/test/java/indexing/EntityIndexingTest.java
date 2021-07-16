@@ -175,44 +175,44 @@ public class EntityIndexingTest {
     @DisplayName("Indexing of entity with various textual properties")
     public void indexTextualContent() {
         // Sub References
-        TestTextualSubRefEntity oneToOneSubRef1 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToOneSubRef1 = metadata.create(TestTextSubRefEntity.class);
         oneToOneSubRef1.setName("oneToOneSubRef1");
-        TestTextualSubRefEntity oneToOneSubRef2 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToOneSubRef2 = metadata.create(TestTextSubRefEntity.class);
         oneToOneSubRef2.setName("oneToOneSubRef2");
-        TestTextualSubRefEntity oneToOneSubRef3 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToOneSubRef3 = metadata.create(TestTextSubRefEntity.class);
         oneToOneSubRef3.setName("oneToOneSubRef3");
 
-        TestTextualSubRefEntity oneToManySubRef11 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef11 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef11.setName("oneToManySubRef11");
-        TestTextualSubRefEntity oneToManySubRef12 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef12 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef12.setName("oneToManySubRef12");
 
-        TestTextualSubRefEntity oneToManySubRef21 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef21 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef21.setName("oneToManySubRef21");
-        TestTextualSubRefEntity oneToManySubRef22 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef22 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef22.setName("oneToManySubRef22");
 
-        TestTextualSubRefEntity oneToManySubRef31 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef31 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef31.setName("oneToManySubRef31");
-        TestTextualSubRefEntity oneToManySubRef32 = metadata.create(TestTextualSubRefEntity.class);
+        TestTextSubRefEntity oneToManySubRef32 = metadata.create(TestTextSubRefEntity.class);
         oneToManySubRef32.setName("oneToManySubRef32");
 
         // References
-        TestTextualRefEntity oneToOneRef = metadata.create(TestTextualRefEntity.class);
+        TestTextRefEntity oneToOneRef = metadata.create(TestTextRefEntity.class);
         oneToOneRef.setName("oneToOneRef");
         oneToOneRef.setOneToOneRef(oneToOneSubRef1);
         oneToOneRef.setOneToManyRef(Arrays.asList(oneToManySubRef11, oneToManySubRef12));
         oneToManySubRef11.setManyToOneRef(oneToOneRef);
         oneToManySubRef12.setManyToOneRef(oneToOneRef);
 
-        TestTextualRefEntity oneToManyRef1 = metadata.create(TestTextualRefEntity.class);
+        TestTextRefEntity oneToManyRef1 = metadata.create(TestTextRefEntity.class);
         oneToManyRef1.setName("oneToManyRef1");
         oneToManyRef1.setOneToOneRef(oneToOneSubRef2);
         oneToManyRef1.setOneToManyRef(Arrays.asList(oneToManySubRef21, oneToManySubRef22));
         oneToManySubRef21.setManyToOneRef(oneToManyRef1);
         oneToManySubRef22.setManyToOneRef(oneToManyRef1);
 
-        TestTextualRefEntity oneToManyRef2 = metadata.create(TestTextualRefEntity.class);
+        TestTextRefEntity oneToManyRef2 = metadata.create(TestTextRefEntity.class);
         oneToManyRef2.setName("oneToManyRef2");
         oneToManyRef2.setOneToOneRef(oneToOneSubRef3);
         oneToManyRef2.setOneToManyRef(Arrays.asList(oneToManySubRef31, oneToManySubRef32));
@@ -220,7 +220,7 @@ public class EntityIndexingTest {
         oneToManySubRef32.setManyToOneRef(oneToManyRef2);
 
         // Root
-        TestTextualRootEntity rootEntity = metadata.create(TestTextualRootEntity.class);
+        TestTextRootEntity rootEntity = metadata.create(TestTextRootEntity.class);
         rootEntity.setName("rootEntity");
         rootEntity.setOneToOneRef(oneToOneRef);
         rootEntity.setOneToManyRef(Arrays.asList(oneToManyRef1, oneToManyRef2));
@@ -237,9 +237,9 @@ public class EntityIndexingTest {
                 oneToManySubRef31, oneToManySubRef32
         );
 
-        JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_textual_properties");
+        JsonNode jsonNode = TestJsonUtils.readJsonFromFile("indexing/test_content_text_properties");
         TestBulkRequestIndexActionValidationData expectedIndexAction = new TestBulkRequestIndexActionValidationData(
-                "search_index_test_textualrootentity",
+                "search_index_test_textrootentity",
                 idSerialization.idToString(Id.of(rootEntity)),
                 jsonNode
         );

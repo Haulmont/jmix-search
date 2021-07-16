@@ -27,9 +27,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @JmixEntity
-@Table(name = "TEST_TEXTUAL_REF_ENTITY")
-@Entity(name = "test_TextualRefEntity")
-public class TestTextualRefEntity extends BaseEntity {
+@Table(name = "TEST_TEXT_REF_ENTITY")
+@Entity(name = "test_TextRefEntity")
+public class TestTextRefEntity extends BaseEntity {
     @InstanceName
     @Column(name = "NAME")
     private String name;
@@ -38,49 +38,49 @@ public class TestTextualRefEntity extends BaseEntity {
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "ONE_TO_ONE_REF_ID")
     @OneToOne(fetch = FetchType.LAZY)
-    private TestTextualSubRefEntity oneToOneRef;
+    private TestTextSubRefEntity oneToOneRef;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
     @OneToMany(mappedBy = "manyToOneRef")
-    private List<TestTextualSubRefEntity> oneToManyRef;
+    private List<TestTextSubRefEntity> oneToManyRef;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "oneToOneRef")
-    private TestTextualRootEntity inverseOneToOneRef;
+    private TestTextRootEntity inverseOneToOneRef;
 
     @JoinColumn(name = "MANY_TO_ONE_REF_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private TestTextualRootEntity manyToOneRef;
+    private TestTextRootEntity manyToOneRef;
 
-    public TestTextualRootEntity getManyToOneRef() {
+    public TestTextRootEntity getManyToOneRef() {
         return manyToOneRef;
     }
 
-    public void setManyToOneRef(TestTextualRootEntity manyToOneRef) {
+    public void setManyToOneRef(TestTextRootEntity manyToOneRef) {
         this.manyToOneRef = manyToOneRef;
     }
 
-    public TestTextualRootEntity getInverseOneToOneRef() {
+    public TestTextRootEntity getInverseOneToOneRef() {
         return inverseOneToOneRef;
     }
 
-    public void setInverseOneToOneRef(TestTextualRootEntity inverseOneToOneRef) {
+    public void setInverseOneToOneRef(TestTextRootEntity inverseOneToOneRef) {
         this.inverseOneToOneRef = inverseOneToOneRef;
     }
 
-    public List<TestTextualSubRefEntity> getOneToManyRef() {
+    public List<TestTextSubRefEntity> getOneToManyRef() {
         return oneToManyRef;
     }
 
-    public void setOneToManyRef(List<TestTextualSubRefEntity> oneToManyRef) {
+    public void setOneToManyRef(List<TestTextSubRefEntity> oneToManyRef) {
         this.oneToManyRef = oneToManyRef;
     }
 
-    public TestTextualSubRefEntity getOneToOneRef() {
+    public TestTextSubRefEntity getOneToOneRef() {
         return oneToOneRef;
     }
 
-    public void setOneToOneRef(TestTextualSubRefEntity oneToOneRef) {
+    public void setOneToOneRef(TestTextSubRefEntity oneToOneRef) {
         this.oneToOneRef = oneToOneRef;
     }
 

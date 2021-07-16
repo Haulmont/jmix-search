@@ -27,9 +27,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @JmixEntity
-@Table(name = "TEST_TEXTUAL_ROOT_ENTITY")
-@Entity(name = "test_TextualRootEntity")
-public class TestTextualRootEntity extends BaseEntity {
+@Table(name = "TEST_TEXT_ROOT_ENTITY")
+@Entity(name = "test_TextRootEntity")
+public class TestTextRootEntity extends BaseEntity {
     @InstanceName
     @Column(name = "NAME")
     private String name;
@@ -38,26 +38,26 @@ public class TestTextualRootEntity extends BaseEntity {
     @OnDelete(DeletePolicy.UNLINK)
     @JoinColumn(name = "ONE_TO_ONE_REF_ID")
     @OneToOne(fetch = FetchType.LAZY)
-    private TestTextualRefEntity oneToOneRef;
+    private TestTextRefEntity oneToOneRef;
 
     @OnDeleteInverse(DeletePolicy.UNLINK)
     @OnDelete(DeletePolicy.UNLINK)
     @OneToMany(mappedBy = "manyToOneRef")
-    private List<TestTextualRefEntity> oneToManyRef;
+    private List<TestTextRefEntity> oneToManyRef;
 
-    public List<TestTextualRefEntity> getOneToManyRef() {
+    public List<TestTextRefEntity> getOneToManyRef() {
         return oneToManyRef;
     }
 
-    public void setOneToManyRef(List<TestTextualRefEntity> oneToManyRef) {
+    public void setOneToManyRef(List<TestTextRefEntity> oneToManyRef) {
         this.oneToManyRef = oneToManyRef;
     }
 
-    public TestTextualRefEntity getOneToOneRef() {
+    public TestTextRefEntity getOneToOneRef() {
         return oneToOneRef;
     }
 
-    public void setOneToOneRef(TestTextualRefEntity oneToOneRef) {
+    public void setOneToOneRef(TestTextRefEntity oneToOneRef) {
         this.oneToOneRef = oneToOneRef;
     }
 

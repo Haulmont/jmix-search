@@ -23,33 +23,33 @@ import test_support.entity.BaseEntity;
 import javax.persistence.*;
 
 @JmixEntity
-@Table(name = "TEST_TEXTUAL_SUB_REF_ENTITY")
-@Entity(name = "test_TextualSubRefEntity")
-public class TestTextualSubRefEntity extends BaseEntity {
+@Table(name = "TEST_TEXT_SUB_REF_ENTITY")
+@Entity(name = "test_TextSubRefEntity")
+public class TestTextSubRefEntity extends BaseEntity {
     @InstanceName
     @Column(name = "NAME")
     private String name;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "oneToOneRef")
-    private TestTextualRefEntity inverseOneToOneRef;
+    private TestTextRefEntity inverseOneToOneRef;
 
     @JoinColumn(name = "MANY_TO_ONE_REF_ID")
     @ManyToOne(fetch = FetchType.LAZY)
-    private TestTextualRefEntity manyToOneRef;
+    private TestTextRefEntity manyToOneRef;
 
-    public TestTextualRefEntity getManyToOneRef() {
+    public TestTextRefEntity getManyToOneRef() {
         return manyToOneRef;
     }
 
-    public void setManyToOneRef(TestTextualRefEntity manyToOneRef) {
+    public void setManyToOneRef(TestTextRefEntity manyToOneRef) {
         this.manyToOneRef = manyToOneRef;
     }
 
-    public TestTextualRefEntity getInverseOneToOneRef() {
+    public TestTextRefEntity getInverseOneToOneRef() {
         return inverseOneToOneRef;
     }
 
-    public void setInverseOneToOneRef(TestTextualRefEntity inverseOneToOneRef) {
+    public void setInverseOneToOneRef(TestTextRefEntity inverseOneToOneRef) {
         this.inverseOneToOneRef = inverseOneToOneRef;
     }
 

@@ -18,9 +18,9 @@ package test_support.indexing;
 
 import io.jmix.search.index.annotation.AutoMappedField;
 import io.jmix.search.index.annotation.JmixEntitySearchIndex;
-import test_support.entity.indexing.TestTextualRootEntity;
+import test_support.entity.indexing.TestTextRootEntity;
 
-@JmixEntitySearchIndex(entity = TestTextualRootEntity.class)
+@JmixEntitySearchIndex(entity = TestTextRootEntity.class)
 public interface TestTextualEntityIndexDefinition {
 
     @AutoMappedField(includeProperties = {
